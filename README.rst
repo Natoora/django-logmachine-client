@@ -2,8 +2,9 @@
 Django Log Machine
 ===================
 
-Django app that provides the functionality and connection settings
-to be able to send exception information to Log Machine.
+Django Log Machine client app.
+
+Log handling and connection settings to send information to Log Machine.
 
 Setup
 -----
