@@ -1,21 +1,27 @@
 import logging.config  # needed when logging_config doesn't start with logging.config
 
+import requests
 from django.conf import settings
 from django.utils import timezone
 from django.views.debug import ExceptionReporter
 
 
 class ExceptionHandler(logging.Handler):
-    """An exception log handler that saves to LogMachine.
-
-    If the request is passed as the first argument to the log record,
-    request data will be provided as part of the record.
+    """
+    An exception log handler that gathers data to be posted to LogMachine.
     """
 
     def __init__(self):
         super().__init__()
 
     def emit(self, record):
+        """
+        Gather data required for the reocrd and post to log machine.
+        Overrides emit method of parent Handler.
+
+        If the request is passed as the first argument to the log record,
+        request data will be provided as part of the record.
+        """
         try:
             request = record.request
             subject = '%s (%s IP): %s' % (
@@ -30,14 +36,11 @@ class ExceptionHandler(logging.Handler):
                 record.getMessage()
             )
             request = None
-        report = self.get_report(request, record)
-        self.save_to_db(
-            subject=self.format_subject(subject),
-            record=record,
-            traceback=report.get_traceback_text()
-        )
+        data = self.gather_data(request=request, subject=subject, record=record)
+        self.post_record(payload=data)
 
-    def get_report(self, request, record):
+    @staticmethod
+    def get_report(request, record):
         if record.exc_info:
             exc_info = record.exc_info
         else:
@@ -45,21 +48,26 @@ class ExceptionHandler(logging.Handler):
         report = ExceptionReporter(request, *exc_info)
         return report
 
-    def format_subject(self, subject):
+    @staticmethod
+    def format_subject(subject):
         """
         Escape CR and LF characters.
         """
         return subject.replace('\n', '\\n').replace('\r', '\\r')
 
-    def save_to_db(self, subject, record, traceback):
-        from .models import ExceptionLog
-        ExceptionLog.objects.create(
-            created_at=timezone.localtime(),
-            level=record.levelno,
-            subject=subject,
-            logger_name=record.name,
-            path_name=record.pathname,
-            func_name=record.funcName,
-            line_num=record.lineno,
-            traceback=traceback
-        )
+    def gather_data(self, request, subject, record):
+        report = self.get_report(request, record)
+        return {
+            "created_at": timezone.localtime(),
+            "level": record.levelno,
+            "subject": self.format_subject(subject),
+            "logger_name": record.name,
+            "path_name": record.pathname,
+            "func_name": record.funcName,
+            "line_num": record.lineno,
+            "traceback": report.get_traceback_text(),
+        }
+
+    @staticmethod
+    def post_record(payload):
+        r = requests.post("https://logmachine.natoora.com", data=payload)
