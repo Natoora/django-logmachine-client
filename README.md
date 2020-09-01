@@ -51,6 +51,18 @@ Development
     /api/handled_500_error
     ```
 
+Testing
+-------
+1. Install test requirements
+    ```
+    pip install -r requirements/requirements-testing.txt
+    ```
+
+2. Run test script:
+    ```
+    (venv) $ python runtests.py
+    ```
+
 Packaging
 ---------
 1. From the app root, run:
