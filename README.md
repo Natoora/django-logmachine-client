@@ -1,4 +1,3 @@
-==================
 Django Log Machine
 ==================
 
@@ -9,15 +8,18 @@ Log handling and connection settings to send information to Log Machine.
 Setup
 -----
 
-1. Add "logmachine" to your INSTALLED_APPS setting like this::
+1. Add "logmachine" to your INSTALLED_APPS setting like this:
 
+    ``` 
     INSTALLED_APPS = [
         ...
         'logmachine',
     ]
+    ```
 
-2. Replace the default Django exception handler for mail_admins witht the Log Machine handler::
+2. Replace the default Django exception handler for mail_admins witht the Log Machine handler:
 
+    ``` 
     LOGGING = {
         ...
         'mail_admins': {
@@ -25,27 +27,35 @@ Setup
             'class': 'logmachine.handlers.ExceptionHandler',
         },
     }
-
-4. Run ``python manage.py migrate`` to create the logmachine models.
-
+    ```
 
 Development
 -----------
-1. Clone the client app repo.
+1. Clone the repo.
 
-2. Run setup instructions as above.
-
-3. On the target project run::
-  
+3. On the target project run:
+    ``` 
     (venv) $ pip install --editable /path/to/django-logmachine
+    ```  
 
-  Now every change made in django-logmachine will be reflected in the target project.
+3. Run setup instructions as above.
 
-4. Include the logmachine URLconf in your project urls.py like this::
-
+4. Include the logmachine URLconf in your project urls.py like this:
+    ``` 
     url(r'api/', include('logmachine.urls')),
+    ```
 
-5. Now you can trigger exceptions with the following URLs::
-
+5. Now you can trigger exceptions with the following URLs:
+    ``` 
     /api/unhandled_500_error
     /api/handled_500_error
+    ```
+
+Packaging
+---------
+1. From the app root, run:
+    ``` 
+    python setup.py sdist
+    ```
+
+2. Commit the new package and push to Git Hub.

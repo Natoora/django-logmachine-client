@@ -1,9 +1,9 @@
-import setuptools
+from setuptools import setup, find_packages
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-setuptools.setup(
+setup(
     name="django-logmachine",
     version="0.0.1",
     author="Ed Chapman",
@@ -11,7 +11,9 @@ setuptools.setup(
     description="Django Log Machine client app.",
     long_description=long_description,
     url="https://github.com/Natoora/django-logmachine",
-    packages=setuptools.find_packages(),
+    packages=find_packages(exclude=['tests*']),
+    zip_safe=False,
+    include_package_data=True,
     classifiers=[
         "Environment :: Web Environment",
         "Framework :: Django",
@@ -28,5 +30,8 @@ setuptools.setup(
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
     ],
     python_requires='>=3.6',
-    install_requires=["requests>=2.2"]
+    install_requires=[
+        "Django>=3"
+        "requests>=2.2"
+    ]
 )
