@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.utils import timezone
 
 
-class TestLogMachineClient(TestCase):
+class TestLogClient(TestCase):
 
     def _mock_record(self):
         return {
@@ -22,5 +22,5 @@ class TestLogMachineClient(TestCase):
     @patch('requests.post')
     def test_post(self, mock_post):
         record = self._mock_record()
-        resp = requests.post("logmachine.natoora.com", data=record)
+        _ = requests.post("logmachine.natoora.com", data=record)
         mock_post.assert_called_with("logmachine.natoora.com", data=record)
