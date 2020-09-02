@@ -5,10 +5,16 @@ Log Machine client app for Django.
 
 Log handling and connection settings to send information to Log Machine.
 
-Setup
------
+Client Installation
+-------------------
 
-1. Add "logmachine" to your INSTALLED_APPS setting like this:
+1. Install with pip:
+
+    ```
+    pip install git+https://github.com/Natoora/django-logmachine-client.git
+    ```
+
+2. Add "logmachine" to your INSTALLED_APPS setting like this:
 
     ``` 
     INSTALLED_APPS = [
@@ -17,7 +23,7 @@ Setup
     ]
     ```
 
-2. Replace the default Django exception handler for mail_admins witht the Log Machine handler:
+3. Replace the default Django exception handler for mail_admins witht the Log Machine handler:
 
     ``` 
     LOGGING = {
@@ -65,9 +71,12 @@ Testing
 
 Packaging
 ---------
-1. From the app root, run:
-    ``` 
-    python setup.py sdist
+1. Make sure you have the latest versions of setuptools and wheel installed:
+    ```
+    python3 -m pip install --user --upgrade setuptools wheel
     ```
 
-2. Commit the new package and push to Git Hub.
+2. Now run this command from the same directory where setup.py is located:
+    ``` 
+    python3 setup.py sdist bdist_wheel
+    ```
