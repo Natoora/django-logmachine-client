@@ -11,7 +11,9 @@ Client Installation
 1. Install with pip:
 
     ```
-    pip install git+https://github.com/Natoora/django-logmachine-client.git
+    pip install git+https://github.com/Natoora/django-logmachine-client.git@{version}
+   
+    # Where version can be a tag, a branch, or a commit.
     ```
 
 2. Add "logmachine" to your INSTALLED_APPS setting like this:
