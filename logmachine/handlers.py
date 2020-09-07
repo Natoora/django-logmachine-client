@@ -5,6 +5,10 @@ from django.conf import settings
 from django.utils import timezone
 from django.views.debug import ExceptionReporter
 
+from .conf import CLIENT_NAME, LOG_MACHINE_URL
+
+logger = logging.getLogger()
+
 
 class ExceptionHandler(logging.Handler):
     """
@@ -58,6 +62,7 @@ class ExceptionHandler(logging.Handler):
     def gather_data(self, request, subject, record):
         report = self.get_report(request, record)
         return {
+            "client_name": CLIENT_NAME,
             "created_at": timezone.localtime(),
             "level": record.levelno,
             "subject": self.format_subject(subject),
@@ -70,4 +75,11 @@ class ExceptionHandler(logging.Handler):
 
     @staticmethod
     def post_record(payload):
-        r = requests.post("https://logmachine.natoora.com", data=payload)
+        try:
+            _ = requests.post(
+                "{}/api/logs/".format(LOG_MACHINE_URL),
+                data=payload,
+                timeout=1
+            )
+        except Exception:
+            logger.info("Exception thrown when posting record to Log Machine")
