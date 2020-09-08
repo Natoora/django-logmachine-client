@@ -41,7 +41,7 @@ Development
 -----------
 1. Clone the repo.
 
-3. On the target project run:
+2. On the target project run:
     ``` 
     (venv) $ pip install --editable /path/to/django-logmachine
     ```  
@@ -58,9 +58,17 @@ Development
     /api/unhandled_500_error
     /api/handled_500_error
     ```
+   
+6. Checkout the Log Machine server and run it locally.
+    ```
+    git checkout https://github.com/Natoora/LogMachine
+    ```
+   
+7. Set the LOG_MACHINE_URL in the project settings to the address the local Log Machine is running at.
 
 Testing
 -------
+
 1. Install test requirements
     ```
     pip install -r requirements/requirements-testing.txt
@@ -73,6 +81,7 @@ Testing
 
 Releasing
 ---------
+
 1. Increment version number in setup.py
 
 2. Commit and push changes.
