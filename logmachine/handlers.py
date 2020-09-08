@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.views.debug import ExceptionReporter
 
-from .conf import CLIENT_NAME, LOG_MACHINE_URL
+from .conf import LOG_MACHINE_URL, PROJECT_NAME, APPENV, APP_LOCATION
 
 logger = logging.getLogger()
 
@@ -62,7 +62,9 @@ class ExceptionHandler(logging.Handler):
     def gather_data(self, request, subject, record):
         report = self.get_report(request, record)
         return {
-            "client_name": CLIENT_NAME,
+            "project_name": PROJECT_NAME,
+            "appenv": APPENV,
+            "app_location": APP_LOCATION,
             "created_at": timezone.localtime(),
             "level": record.levelno,
             "subject": self.format_subject(subject),
