@@ -71,14 +71,15 @@ Testing
     (venv) $ python runtests.py
     ```
 
-Packaging
+Releasing
 ---------
-1. Make sure you have the latest versions of setuptools and wheel installed:
-    ```
-    python3 -m pip install --user --upgrade setuptools wheel
-    ```
+1. Increment version number in setup.py
 
-2. Now run this command from the same directory where setup.py is located:
+2. Commit and push changes.
+
+3. Create release on GitHub with the version number.
+
+4. The release can then be installed into Django projects like this:
     ``` 
-    python3 setup.py sdist bdist_wheel
+    git+https://github.com/Natoora/django-logmachine-client.git@{version number}
     ```
