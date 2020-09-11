@@ -84,5 +84,7 @@ class ExceptionHandler(logging.Handler):
                 timeout=1
             )
             r.raise_for_status()
-        except Exception:
+            print(r)
+        except Exception as e:
+            print(e)
             logger.info("Exception thrown when posting record to Log Machine")
