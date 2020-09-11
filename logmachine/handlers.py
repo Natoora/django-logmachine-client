@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.views.debug import ExceptionReporter
 
-from .conf import LOG_MACHINE_URL, PROJECT_NAME, APPENV, APP_LOCATION
+from .conf import PROJECT_NAME, APPENV, APP_LOCATION
 
 logger = logging.getLogger()
 
@@ -79,7 +79,7 @@ class ExceptionHandler(logging.Handler):
     def post_record(payload):
         try:
             r = requests.post(
-                "{}/api/logs/".format(LOG_MACHINE_URL),
+                "https://log-machine.natoora.com/api/logs/",
                 json=payload,
                 timeout=1
             )
