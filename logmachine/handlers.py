@@ -78,10 +78,11 @@ class ExceptionHandler(logging.Handler):
     @staticmethod
     def post_record(payload):
         try:
-            _ = requests.post(
+            r = requests.post(
                 "{}/api/logs/".format(LOG_MACHINE_URL),
                 json=payload,
                 timeout=1
             )
+            r.raise_for_status()
         except Exception:
             logger.info("Exception thrown when posting record to Log Machine")
