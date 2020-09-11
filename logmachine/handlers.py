@@ -80,7 +80,7 @@ class ExceptionHandler(logging.Handler):
         try:
             _ = requests.post(
                 "{}/api/logs/".format(LOG_MACHINE_URL),
-                data=payload,
+                json=payload,
                 timeout=1
             )
         except Exception:
