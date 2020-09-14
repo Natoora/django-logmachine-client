@@ -6,8 +6,8 @@ from django.utils import timezone
 from django.views.debug import ExceptionReporter
 from rest_framework.renderers import JSONRenderer
 
-from serializers import ExceptionSerializer
 from .conf import PROJECT_NAME, APPENV, APP_LOCATION, LOG_MACHINE_URL
+from .serializers import ExceptionSerializer
 
 logger = logging.getLogger()
 
