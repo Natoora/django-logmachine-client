@@ -1,11 +1,12 @@
-import json
 import logging.config  # needed when logging_config doesn't start with logging.config
 
 import requests
 from django.conf import settings
 from django.utils import timezone
 from django.views.debug import ExceptionReporter
+from rest_framework.renderers import JSONRenderer
 
+from serializers import ExceptionSerializer
 from .conf import PROJECT_NAME, APPENV, APP_LOCATION, LOG_MACHINE_URL
 
 logger = logging.getLogger()
@@ -42,7 +43,9 @@ class ExceptionHandler(logging.Handler):
             )
             request = None
         data = self.gather_data(request=request, subject=subject, record=record)
-        self.post_record(payload=data)
+        serialized_data = ExceptionSerializer(data).data
+        json_data = JSONRenderer().render(serialized_data)
+        self.post_record(data=json_data)
 
     @staticmethod
     def get_report(request, record):
@@ -77,11 +80,11 @@ class ExceptionHandler(logging.Handler):
         }
 
     @staticmethod
-    def post_record(payload):
+    def post_record(data):
         try:
             r = requests.post(
                 "{}/api/logs/".format(LOG_MACHINE_URL),
-                data=json.dumps(payload, default=str),  # This converts types to str if they're not "json serializable"
+                data=data,
                 timeout=1,
                 headers={
                     'Content-type': 'application/json',
@@ -90,5 +93,4 @@ class ExceptionHandler(logging.Handler):
             )
             r.raise_for_status()
         except Exception as e:
-            print(e)
             logger.info("Exception thrown when posting record to Log Machine")
