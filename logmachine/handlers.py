@@ -6,7 +6,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.views.debug import ExceptionReporter
 
-from .conf import PROJECT_NAME, APPENV, APP_LOCATION
+from .conf import PROJECT_NAME, APPENV, APP_LOCATION, LOG_MACHINE_URL
 
 logger = logging.getLogger()
 
@@ -80,7 +80,7 @@ class ExceptionHandler(logging.Handler):
     def post_record(payload):
         try:
             r = requests.post(
-                "{}/api/logs/".format("https://log-machine.natoora.com"),
+                "{}/api/logs/".format(LOG_MACHINE_URL),
                 data=json.dumps(payload, default=str),  # This converts types to str if they're not "json serializable"
                 timeout=1,
                 headers={
