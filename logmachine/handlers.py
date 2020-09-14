@@ -1,3 +1,4 @@
+import json
 import logging.config  # needed when logging_config doesn't start with logging.config
 
 import requests
@@ -79,12 +80,15 @@ class ExceptionHandler(logging.Handler):
     def post_record(payload):
         try:
             r = requests.post(
-                "https://log-machine.natoora.com/api/logs/",
-                json=payload,
-                timeout=1
+                "{}/api/logs/".format("https://log-machine.natoora.com"),
+                data=json.dumps(payload, default=str),  # This converts types to str if they're not "json serializable"
+                timeout=1,
+                headers={
+                    'Content-type': 'application/json',
+                    'Accept': 'application/json'
+                }
             )
             r.raise_for_status()
-            print(r)
         except Exception as e:
             print(e)
             logger.info("Exception thrown when posting record to Log Machine")
