@@ -85,12 +85,16 @@ class ExceptionHandler(logging.Handler):
             r = requests.post(
                 "{}/api/logs/".format(LOG_MACHINE_URL),
                 data=data,
-                timeout=1,
+                timeout=0.5,
                 headers={
                     'Content-type': 'application/json',
                     'Accept': 'application/json'
                 }
             )
             r.raise_for_status()
+        except requests.exceptions.ReadTimeout:
+            logger.info("Request exceeded 0.5s timeout when posting record to Log Machine")
+            pass
         except Exception as e:
             logger.info("Exception thrown when posting record to Log Machine")
+            pass
