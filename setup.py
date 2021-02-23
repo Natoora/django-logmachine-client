@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="django-logmachine",
-    version="0.1.5",
+    version="0.1.6",
     author="Ed Chapman",
     author_email="ed@natoora.com",
     description="Django Log Machine client app.",
@@ -31,8 +31,8 @@ setup(
     ],
     python_requires='>=3.6',
     install_requires=[
-        "Django>=3"
+        "Django>=2"
         "requests>=2",
-        "djangorestframework>=3"
+        "djangorestframework>=2"
     ]
 )
